@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Новая заметка{% endblock %}
+
+{% block content %}
+<h2 class="my-3 text-center">{{ note.topic }}</h2>
+
+<p class="font-weight-bolder text-center">
+    {{ note.author.first_name + ' ' + note.author.last_name}}
+</p>
+
+{% if note.is_public %}
+<p class="font-italic text-white"><span class="p-1 bg-success">Общедоступная статья</span></p>
+{% else %}
+<p class="font-italic text-white"><span class="p-1 bg-danger">Только для зарегистрированных пользователей</span></p>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center">
+    <p>
+        Создано:
+        <script type="text/javascript">fromUtcToLocal('{{ note.creation_date }} UTC')</script>
+        {% if note.modification_date %}<br>
+        Последнее изменение:
+        <script type="text/javascript">fromUtcToLocal('{{ note.modification_date }} UTC')</script>
+        {% endif %}
+    </p>
+    {% if user.is_authenticated and note.author_id == user.id %}
+    <div>
+        <a class="btn btn-outline-primary" href="/edit-note/{{ note.id }}">Редактировать&#8230;</a>
+        <a class="btn btn-outline-primary" href="/delete-note/{{ note.id }}">Удалить</a>
+    </div>
+    {% endif %}
+</div>
+
+<hr>
+
+<p class="lead">
+<pre>
+{{ note.content }}	
+	</pre>
+</p>
+
+{% endblock %}

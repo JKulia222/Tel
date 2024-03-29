@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="shortcut icon" type="image/png">
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript">
+    	function fromUtcToLocal(timestamp) {
+    		var theDate = new Date(Date.parse(timestamp));
+    		document.write(theDate.toLocaleString());
+    	}
+
+    </script>
+
+    <title>{% block title %}Базовый шаблон{% endblock %}</title>
+</head>
+<body>
+<!-- Панель навигации -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">iBlogger</a>
+
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/"><i aria-hidden="true" class="fa fa-home"></i>&nbsp;Главная <span
+                        class="sr-only">(текущая)</span></a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="nav-link" href="/my-notes"><i aria-hidden="true" class="fa fa-address-book-o"></i>&nbsp;Мои
+                    заметки</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/new-note"><i aria-hidden="true" class="fa fa-pencil"></i>&nbsp;Написать
+                    заметку</a>
+            </li>
+            {% endif %}
+        </ul>
+
+        <form action="/search" class="form-inline my-2 my-lg-0">
+            <input aria-label="search" class="form-control mr-sm-2" id="search" name="query" placeholder="Любая фраза"
+                   type="search">
+            <button class="btn btn-outline-warning my-2 my-sm-0 mr-5" type="submit">Найти</button>
+        </form>
+
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+            <button aria-expanded="false" aria-haspopup="true" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                    id="dropdownMenuButton" type="button">
+                {{ user.first_name + ' ' + user.last_name }}
+            </button>
+            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="/profile"><i class="fa fa-user-circle fa-fw"></i>&nbsp;Профиль</a>
+                <a class="dropdown-item" href="/logout"><i class="fa fa-sign-out fa-fw"></i>&nbsp;Выход</a>
+            </div>
+        </div>
+        {% else %}
+        <button class="btn btn-primary my-2 mx-2 my-sm-0" data-target="#signupModal" data-toggle="modal" type="button">
+            Регистрация
+        </button>
+        <button class="btn btn-primary my-2 mx-2 my-sm-0" data-target="#loginModal" data-toggle="modal" type="button">
+            Вход
+        </button>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Модальное окно регистрации -->
+<div aria-hidden="true" aria-labelledby="signupModalLabel" class="modal fade" id="signupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel"><b>Регистрация нового пользователя</b></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/signup" method="POST">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="signupEmail">Ваш e-mail:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="signup-email" class="form-control" id="signupEmail" name="email"
+                                   placeholder="Введите Ваш e-mail" required type="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="signupFirstName">Ваше имя:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="signup-first-name" class="form-control" id="signupFirstName" name="firstname"
+                                   placeholder="Введите Ваше имя" required type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="signupLastName">Ваша фамилия:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="signup-last-name" class="form-control" id="signupLastName" name="lastname"
+                                   placeholder="Введите Вашу фамилию" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="signupPassword1">Пароль:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="signup-password" class="form-control" id="signupPassword1" name="password1"
+                                   placeholder="Введите надёжный пароль" required type="password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="signupPassword2">Повторите пароль:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="signup-confirm-password" class="form-control" id="signupPassword2" name="password2"
+                                   placeholder="Введите пароль ещё раз" required
+                                   type="password">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+                    <button class="btn btn-secondary" type="reset">Очистить форму</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для входа в систему -->
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel"><b>Вход для существующих пользователей</b></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/login" method="POST">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="loginEmail">Ваш e-mail:</label>
+                        <div class="col-sm-9">
+                            <input aria-describedby="login-email" class="form-control" id="loginEmail" name="email"
+                                   placeholder="Введите Ваш e-mail" required type="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="loginPassword">Ваш пароль:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="loginPassword" name="password" placeholder="Введите ваш пароль" required
+                                   type="password">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Войти</button>
+                    <button class="btn btn-secondary" type="reset">Очистить форму</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+{% if cat == 'error' %}
+<div class="alert alert-danger alert-dismissable fade show" role="alert">
+    {{ msg }}
+    <button class="close" data-dismiss="alert" type="button">
+        <span area-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alert-dismissable fade show" role="alert">
+    {{ msg }}
+    <button class="close" data-dismiss="alert" type="button">
+        <span area-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+    {% block content %}
+
+    {% endblock %}
+</div>
+
+<div class="container my-2">
+    <footer>
+        <p class="copyright text-muted text-center">Проект <b>Юлии Кондратович</b> и <b>Егора Емшанова</b><br>
+            Яндекс Лицей, 2 курс<br>
+            Калининград, 2024&nbsp;г.</p>
+    </footer>
+</div>
+
+<script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript"></script>
+
+{% if show_signup_form %}
+<script type="text/javascript">
+    	$('#signupModal').modal('show');
+
+</script>
+{% endif %}
+
+{% if show_login_form %}
+<script type="text/javascript">
+    	$('#loginModal').modal('show');
+
+</script>
+{% endif %}
+</body>
+</html>

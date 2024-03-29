@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Регистрация нового пользователя</h3>
+    <div class="form-group">
+        <label for="email">Ваш e-mail:</label>
+        <input class="form-control" id="email" name="email" placeholder="Введите Ваш e-mail" type="email">
+    </div>
+    <div class="form-group">
+        <label for="firstName">Ваше имя:</label>
+        <input class="form-control" id="firstName" name="firstName" placeholder="Введите Ваше имя" type="text">
+    </div>
+    <div class="form-group">
+        <label for="password1">Придумайте и введите пароль:</label>
+        <input class="form-control" id="password1" name="password1" placeholder="Введите пароль" type="password">
+    </div>
+    <div class="form-group">
+        <label for="password2">Введите пароль ещё раз:</label>
+        <input class="form-control" id="password2" name="password2" placeholder="Повторите пароль" type="password">
+    </div>
+    <br>
+    <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+</form>
+{% endblock %}

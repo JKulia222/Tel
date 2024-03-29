@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<h2 class="my-3">Изменение сведений о пользователе</h2>
+
+<form action="/profile" method='POST'>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="email">E-mail:</label>
+        <div class="col-sm-10">
+            <input class="form-control-plaintext" id="email" readonly type="text" value="{{ user.email }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="newFirstName">Имя:</label>
+        <div class="col-sm-10">
+            <input class="form-control" id="newFirstName" name="firstname" placeholder="Введите новое имя" type="text"
+                   value="{{ user.first_name }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="newLastName">Фамилия:</label>
+        <div class="col-sm-10">
+            <input class="form-control" id="newLastName" name="lastname" placeholder="Введите новую фамилию" type="text"
+                   value="{{ user.last_name }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="newPassword1">Новый пароль:</label>
+        <div class="col-sm-10">
+            <input class="form-control" id="newPassword1" name="password1" placeholder="Введите новый пароль"
+                   type="password">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="newPassword2">Повторите новый пароль:</label>
+        <div class="col-sm-10">
+            <input class="form-control" id="newPassword2" name="password2" placeholder="Введите новый пароль ещё раз"
+                   type="password">
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
+    <a class="btn btn-secondary" href="/" role="button">Отмена</a>
+</form>
+{% endblock %}

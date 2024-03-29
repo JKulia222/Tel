@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Изменение заметки{% endblock %}
+
+{% block content %}
+<h2 class="my-3">Редактирование заметки</h2>
+
+<form action="/edit-note/{{ note.id }}" method='POST'>
+    <div class="form-group">
+        <label for="topic">Тема</label>
+        <input aria-describedby="noteTopicHelp" class="form-control" id="topic" name="topic" placeholder="Укажите тему заметки"
+               required type="text" value="{{ note.topic }}">
+        <small class="form-text text-muted" id="noteTopicHelp">Это поле должно быть заполнено.</small>
+    </div>
+    <div class="form-group">
+        <label for="noteContent">Содержание</label>
+        <textarea aria-describedby="noteContentHelp" class="form-control" id="noteContent" name="content" placeholder="Введите текст заметки"
+                  required rows="5">{{ note.content }}</textarea>
+        <small class="form-text text-muted" id="noteContentHelp">Это поле не может быть пустым.</small>
+    </div>
+    <div class="form-group form-check">
+        <input %} %}checked{% class="form-check-input" endif id="isPublicCheck" if name="ispublic"
+               note.is_public type="checkbox" value="true" {%>
+        <label class="form-check-label" for="isPublicCheck">Сделать эту заметку общедоступной</label>
+    </div>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
+    <a class="btn btn-secondary" href="/" role="button">Отмена</a>
+</form>
+{% endblock %}
